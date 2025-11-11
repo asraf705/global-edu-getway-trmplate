@@ -18,6 +18,7 @@ export default function Footer() {
       { href: '/universities', label: 'Universities' },
       { href: '/jobs', label: 'Jobs in Russia' },
       { href: '/testimonials', label: 'Testimonials' },
+      { href: '/community', label: 'Community' },
     ],
     resources: [
       { href: '/blog', label: 'Blog & News' },
