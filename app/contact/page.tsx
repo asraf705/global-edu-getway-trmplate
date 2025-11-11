@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Facebook, Instagram } from 'lucide-react'
+import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Facebook, Instagram, MessageSquare, CheckCircle2 } from 'lucide-react'
 import { useLocation, getDisplayAddress } from '@/hooks/useLocation'
 
 export default function ContactPage() {
@@ -19,7 +19,7 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Create mailto link
-    const mailtoLink = `mailto:info@globaledugateway.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
+    const mailtoLink = `mailto:globaledugateway1@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
     window.location.href = mailtoLink
   }
 
@@ -31,15 +31,18 @@ export default function ContactPage() {
     },
     {
       icon: Phone,
-      title: 'Phone',
-      content: '+880 1234 567 890',
-      link: 'tel:+8801234567890',
+      title: 'Phone Numbers',
+      content: '+79171234292 (Russia)\n+8801314924003 (Bangladesh)',
+      phones: [
+        { number: '+79171234292', country: 'Russia', whatsapp: '79171234292', telegram: '79171234292' },
+        { number: '+8801314924003', country: 'Bangladesh', whatsapp: '8801314924003', telegram: '8801314924003' },
+      ],
     },
     {
       icon: Mail,
       title: 'Email',
-      content: 'info@globaledugateway.com',
-      link: 'mailto:info@globaledugateway.com',
+      content: 'globaledugateway1@gmail.com',
+      link: 'mailto:globaledugateway1@gmail.com',
     },
     {
       icon: Clock,
@@ -89,22 +92,80 @@ export default function ContactPage() {
                   className="bg-white p-6 rounded-xl shadow-md"
                 >
                   <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-6 h-6 text-primary-600" />
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{info.title}</h3>
-                      {info.link ? (
-                        <a
-                          href={info.link}
-                          className="text-gray-600 hover:text-primary-600 transition-colors whitespace-pre-line"
-                        >
-                          {info.content}
-                        </a>
-                      ) : (
-                        <p className="text-gray-600 whitespace-pre-line">{info.content}</p>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2 text-lg">
+                      {info.title}
+                      {info.phones && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                          <CheckCircle2 className="w-3 h-3" />
+                          Available
+                        </span>
                       )}
-                    </div>
+                    </h3>
+                    {info.link ? (
+                      <a
+                        href={info.link}
+                        className="text-gray-600 hover:text-primary-600 transition-colors whitespace-pre-line flex items-start gap-2 group"
+                      >
+                        {info.title === 'Email' && <Mail className="w-4 h-4 text-gray-400 group-hover:text-primary-600 mt-0.5 flex-shrink-0" />}
+                        <span>{info.content}</span>
+                      </a>
+                    ) : info.phones ? (
+                      <div className="space-y-4">
+                        {info.phones.map((phone, idx) => (
+                          <div key={idx} className="p-4 bg-gradient-to-br from-gray-50 to-white rounded-lg border-2 border-gray-200 hover:border-primary-300 transition-all shadow-sm hover:shadow-md">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                                <Phone className="w-4 h-4 text-primary-600" />
+                              </div>
+                              <div className="flex-1">
+                                <a
+                                  href={`tel:${phone.number.replace(/\s/g, '')}`}
+                                  className="text-gray-900 font-semibold hover:text-primary-600 transition-colors text-base"
+                                >
+                                  {phone.number}
+                                </a>
+                                <div className="flex items-center gap-1 mt-0.5">
+                                  <MapPin className="w-3 h-3 text-gray-500" />
+                                  <span className="text-xs text-gray-600 font-medium">{phone.country}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200">
+                              <a
+                                href={`https://wa.me/${phone.whatsapp}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-green-500 text-white rounded-lg text-xs font-semibold hover:bg-green-600 transition-all shadow-sm hover:shadow-md hover:scale-105"
+                                title="Contact via WhatsApp"
+                              >
+                                <MessageSquare className="w-4 h-4" />
+                                WhatsApp
+                              </a>
+                              <a
+                                href={`https://t.me/${phone.telegram}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-blue-500 text-white rounded-lg text-xs font-semibold hover:bg-blue-600 transition-all shadow-sm hover:shadow-md hover:scale-105"
+                                title="Contact via Telegram"
+                              >
+                                <MessageCircle className="w-4 h-4" />
+                                Telegram
+                              </a>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-600 whitespace-pre-line flex items-start gap-2">
+                        {info.title === 'Office Hours' && <Clock className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />}
+                        <span>{info.content}</span>
+                      </p>
+                    )}
+                  </div>
                   </div>
                 </motion.div>
               )
