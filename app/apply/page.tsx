@@ -95,7 +95,8 @@ export default function ApplyPage() {
       year: '',
       isDoubleDegree: false,
       studyMedium: '',
-      documents: [],
+      certificate: null,
+      transcript: null,
     }
     setFormData(prev => ({
       ...prev,
@@ -148,33 +149,24 @@ export default function ApplyPage() {
     }))
   }
 
-  const handleDocumentUpload = (id: string, files: FileList | null) => {
-    if (!files || files.length === 0) return
-    
-    const fileArray = Array.from(files)
+  const handleCertificateUpload = (id: string, file: File | null) => {
     setFormData(prev => ({
       ...prev,
       academics: prev.academics.map(entry => {
         if (entry.id === id) {
-          return {
-            ...entry,
-            documents: [...entry.documents, ...fileArray],
-          }
+          return { ...entry, certificate: file }
         }
         return entry
       }),
     }))
   }
 
-  const removeDocument = (academicId: string, documentIndex: number) => {
+  const handleTranscriptUpload = (id: string, file: File | null) => {
     setFormData(prev => ({
       ...prev,
       academics: prev.academics.map(entry => {
-        if (entry.id === academicId) {
-          return {
-            ...entry,
-            documents: entry.documents.filter((_, idx) => idx !== documentIndex),
-          }
+        if (entry.id === id) {
+          return { ...entry, transcript: file }
         }
         return entry
       }),
@@ -572,46 +564,88 @@ Email: ${formData.email}`
 
                         {/* Documents Upload */}
                         <div className="mt-4 pt-4 border-t border-gray-200">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Academic Documents
-                          </label>
-                          <div className="space-y-2">
-                            <input
-                              type="file"
-                              multiple
-                              onChange={(e) => handleDocumentUpload(academic.id, e.target.files)}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                            />
-                            <p className="text-xs text-gray-500">
-                              Upload certificates, transcripts, or other academic documents (PDF, DOC, DOCX, JPG, PNG)
-                            </p>
-                            
-                            {academic.documents.length > 0 && (
-                              <div className="mt-3 space-y-2">
-                                {academic.documents.map((doc, docIndex) => (
-                                  <div
-                                    key={docIndex}
-                                    className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg"
-                                  >
+                          <h4 className="text-sm font-semibold text-gray-900 mb-4">Academic Documents (PDF Format)</h4>
+                          
+                          <div className="space-y-4">
+                            {/* Academic Certificate */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Academic Certificate (PDF) *
+                              </label>
+                              <div className="space-y-2">
+                                <input
+                                  type="file"
+                                  accept=".pdf"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0] || null
+                                    handleCertificateUpload(academic.id, file)
+                                  }}
+                                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                                />
+                                <p className="text-xs text-gray-500">
+                                  Upload your academic certificate in PDF format
+                                </p>
+                                
+                                {academic.certificate && (
+                                  <div className="mt-2 flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
                                     <div className="flex items-center gap-2 flex-1 min-w-0">
                                       <FileText className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                                      <span className="text-sm text-gray-700 truncate">{doc.name}</span>
+                                      <span className="text-sm text-gray-700 truncate">{academic.certificate.name}</span>
                                       <span className="text-xs text-gray-500">
-                                        ({(doc.size / 1024).toFixed(1)} KB)
+                                        ({(academic.certificate.size / 1024).toFixed(1)} KB)
                                       </span>
                                     </div>
                                     <button
                                       type="button"
-                                      onClick={() => removeDocument(academic.id, docIndex)}
+                                      onClick={() => handleCertificateUpload(academic.id, null)}
                                       className="text-red-600 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors"
                                     >
                                       <X className="w-4 h-4" />
                                     </button>
                                   </div>
-                                ))}
+                                )}
                               </div>
-                            )}
+                            </div>
+
+                            {/* Academic Transcript/Mark Sheet */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Academic Transcript / Mark Sheet (PDF) *
+                              </label>
+                              <div className="space-y-2">
+                                <input
+                                  type="file"
+                                  accept=".pdf"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0] || null
+                                    handleTranscriptUpload(academic.id, file)
+                                  }}
+                                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                                />
+                                <p className="text-xs text-gray-500">
+                                  Upload your academic transcript or mark sheet in PDF format
+                                </p>
+                                
+                                {academic.transcript && (
+                                  <div className="mt-2 flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
+                                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                                      <FileText className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                                      <span className="text-sm text-gray-700 truncate">{academic.transcript.name}</span>
+                                      <span className="text-xs text-gray-500">
+                                        ({(academic.transcript.size / 1024).toFixed(1)} KB)
+                                      </span>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleTranscriptUpload(academic.id, null)}
+                                      className="text-red-600 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
