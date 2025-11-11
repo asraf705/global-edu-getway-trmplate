@@ -4,9 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Phone, MapPin, Facebook, Instagram, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useLocation, getDisplayAddress } from '@/hooks/useLocation'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const { country, isLoading } = useLocation()
+  const displayAddress = getDisplayAddress(country)
 
   const footerLinks = {
     company: [
@@ -131,9 +134,8 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">
-                  Dhaka, Bangladesh<br />
-                  Office Address
+                <span className="text-sm whitespace-pre-line">
+                  {isLoading ? 'Loading...' : displayAddress.full}
                 </span>
               </li>
               <li className="flex items-center space-x-3">

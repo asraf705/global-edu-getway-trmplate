@@ -3,8 +3,12 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Facebook, Instagram } from 'lucide-react'
+import { useLocation, getDisplayAddress } from '@/hooks/useLocation'
 
 export default function ContactPage() {
+  const { country, isLoading } = useLocation()
+  const displayAddress = getDisplayAddress(country)
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,7 +27,7 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Office Address',
-      content: 'Dhaka, Bangladesh\nOffice Address',
+      content: isLoading ? 'Loading...' : displayAddress.full,
     },
     {
       icon: Phone,
