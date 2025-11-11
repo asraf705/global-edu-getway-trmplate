@@ -5,6 +5,7 @@ import WhyChooseUs from '@/components/sections/WhyChooseUs'
 import StudyInRussiaHighlight from '@/components/sections/StudyInRussiaHighlight'
 import TestimonialsPreview from '@/components/sections/TestimonialsPreview'
 import PartnerUniversities from '@/components/sections/PartnerUniversities'
+import OurConsultants from '@/components/sections/OurConsultants'
 
 export const metadata: Metadata = {
   title: 'Home - GlobalEdu Gateway | Your Gateway to Study in Russia',
@@ -22,6 +23,7 @@ export default function Home() {
       <Stats />
       <WhyChooseUs />
       <StudyInRussiaHighlight />
+      <OurConsultants />
       <TestimonialsPreview />
       <PartnerUniversities />
     </>
