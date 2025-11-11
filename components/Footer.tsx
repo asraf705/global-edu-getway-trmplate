@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { GraduationCap, Mail, Phone, MapPin, Facebook, Instagram, MessageCircle } from 'lucide-react'
+import Image from 'next/image'
+import { Mail, Phone, MapPin, Facebook, Instagram, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function Footer() {
@@ -39,13 +40,14 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="bg-primary-500 p-2 rounded-lg">
-                <GraduationCap className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">
-                GlobalEdu <span className="text-primary-400">Gateway</span>
-              </span>
+            <Link href="/" className="flex items-center mb-4">
+              <Image
+                src="/images/GLOBAL-EDU-GATEWAY-logo.png"
+                alt="GlobalEdu Gateway Logo"
+                width={50}
+                height={50}
+                className="h-10 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm text-gray-400 mb-4">
               Your trusted partner for studying in Russia. Helping Bangladeshi students achieve their dreams of international education.

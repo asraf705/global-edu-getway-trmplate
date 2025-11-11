@@ -48,7 +48,7 @@ export default function RootLayout({
               name: 'GlobalEdu Gateway',
               description: 'Educational agency helping Bangladeshi students study in Russia',
               url: 'https://globaledugateway.com',
-              logo: 'https://globaledugateway.com/logo.png',
+              logo: '/images/GLOBAL-EDU-GATEWAY-logo.png',
               contactPoint: {
                 '@type': 'ContactPoint',
                 contactType: 'Customer Service',

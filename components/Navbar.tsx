@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, GraduationCap } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navbar() {
@@ -40,13 +41,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="bg-primary-500 p-2 rounded-lg group-hover:bg-primary-600 transition-colors">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">
-              GlobalEdu <span className="text-primary-500">Gateway</span>
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/GLOBAL-EDU-GATEWAY-logo.png"
+              alt="GlobalEdu Gateway Logo"
+              width={90}
+              height={90}
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
