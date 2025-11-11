@@ -55,11 +55,13 @@ export const addresses = {
     full: 'Lukachova, Samara, Russia',
     city: 'Samara',
     country: 'Russia',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d90686.28664808045!2d50.14783532928807!3d53.21603998404287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x41661f022c9c0ee5%3A0x98a0d7b16165dbca!2sLukachova%2011!5e1!3m2!1sen!2sbd!4v1762850460657!5m2!1sen!2sbd',
   },
   bangladesh: {
     full: '713, Ibrahimpur, North Kafrul, Dhaka-1206, Bangladesh',
     city: 'Dhaka',
     country: 'Bangladesh',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d541.3088712500295!2d90.3806177!3d23.7931478!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c7fe4bc513e9%3A0xf3bbf012e15f28cc!2s713%20North%20Kafrul!5e1!3m2!1sen!2sbd!4v1762850543790!5m2!1sen!2sbd',
   },
 }
 

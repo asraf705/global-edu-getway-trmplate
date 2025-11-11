@@ -214,21 +214,34 @@ export default function ContactPage() {
               </form>
             </motion.div>
 
-            {/* Map Placeholder */}
+            {/* Google Maps Embed */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-8 bg-gray-200 rounded-xl aspect-video flex items-center justify-center"
+              className="mt-8 rounded-xl overflow-hidden shadow-lg aspect-video"
             >
-              <div className="text-center">
-                <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">Google Maps Embed</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Add your Google Maps embed code here
-                </p>
-              </div>
+              {isLoading ? (
+                <div className="bg-gray-200 rounded-xl aspect-video flex items-center justify-center">
+                  <div className="text-center">
+                    <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4 animate-pulse" />
+                    <p className="text-gray-600">Loading map...</p>
+                  </div>
+                </div>
+              ) : (
+                <iframe
+                  src={displayAddress.mapUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full"
+                  title={`${displayAddress.city} Office Location`}
+                />
+              )}
             </motion.div>
           </div>
         </div>
