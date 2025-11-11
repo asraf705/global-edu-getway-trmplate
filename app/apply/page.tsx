@@ -256,7 +256,7 @@ ${formData.tests.length > 0 ? `Tests & Certificates:\n${testSummary}\n\n` : ''}C
 Email: ${formData.email}`
 
     // Redirect to WhatsApp
-    const whatsappNumber = '8801234567890' // Replace with actual number
+    const whatsappNumber = '8801314924003'
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     
     // Small delay for UX
