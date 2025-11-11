@@ -44,9 +44,9 @@ export default function Footer() {
               <Image
                 src="/images/GLOBAL-EDU-GATEWAY-logo.png"
                 alt="GlobalEdu Gateway Logo"
-                width={50}
-                height={50}
-                className="h-10 w-auto object-contain"
+                width={100}
+                height={100}
+                className="h-[100px] w-[100px] object-contain"
               />
             </Link>
             <p className="text-sm text-gray-400 mb-4">

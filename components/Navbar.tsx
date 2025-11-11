@@ -47,7 +47,7 @@ export default function Navbar() {
               alt="GlobalEdu Gateway Logo"
               width={90}
               height={90}
-              className="h-10 w-auto object-contain"
+              className="h-[90px] w-[90px] object-contain"
               priority
             />
           </Link>
