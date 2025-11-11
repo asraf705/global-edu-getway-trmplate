@@ -25,6 +25,7 @@ export default function Navbar() {
     { href: '/about', label: 'About' },
     { href: '/russia', label: 'Study in Russia' },
     { href: '/universities', label: 'Universities' },
+    { href: '/jobs', label: 'Jobs' },
     { href: '/testimonials', label: 'Testimonials' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },

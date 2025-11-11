@@ -13,6 +13,7 @@ export default function Footer() {
       { href: '/about', label: 'About Us' },
       { href: '/russia', label: 'Study in Russia' },
       { href: '/universities', label: 'Universities' },
+      { href: '/jobs', label: 'Jobs in Russia' },
       { href: '/testimonials', label: 'Testimonials' },
     ],
     resources: [
@@ -49,6 +50,10 @@ export default function Footer() {
                 className="h-[100px] w-[100px] object-contain"
               />
             </Link>
+            <span className="text-xl font-bold text-white">
+                GlobalEdu <span className="text-primary-400">Gateway</span>
+              </span>
+           
             <p className="text-sm text-gray-400 mb-4">
               Your trusted partner for studying in Russia. Helping Bangladeshi students achieve their dreams of international education.
             </p>
@@ -151,6 +156,17 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-sm text-gray-400">
             © {currentYear} GlobalEdu Gateway. All rights reserved.
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Designed and developed by{' '}
+            <a
+              href="https://nextzencode.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 transition-colors"
+            >
+              NextZenCode
+            </a>
           </p>
         </div>
       </div>
