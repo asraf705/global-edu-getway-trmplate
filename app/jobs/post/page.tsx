@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Briefcase, Building2, MapPin, DollarSign, FileText, Send, Languages } from 'lucide-react'
+import { Briefcase, Building2, MapPin, DollarSign, FileText, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { LanguageRequirement } from '@/components/jobs/JobCard'
+import LanguageSelector from '@/components/jobs/LanguageSelector'
 
 export default function PostJobPage() {
   const router = useRouter()
@@ -16,8 +16,7 @@ export default function PostJobPage() {
     salary: '',
     description: '',
     requirements: '',
-    languages: [] as LanguageRequirement[],
-    otherLanguages: '',
+    languages: [] as string[],
     contactEmail: '',
     contactPhone: '',
   })
@@ -53,21 +52,6 @@ export default function PostJobPage() {
     })
   }
 
-  const handleLanguageToggle = (lang: LanguageRequirement) => {
-    setFormData({
-      ...formData,
-      languages: formData.languages.includes(lang)
-        ? formData.languages.filter((l) => l !== lang)
-        : [...formData.languages, lang],
-    })
-  }
-
-  const languageOptions: { value: LanguageRequirement; label: string; icon: string }[] = [
-    { value: 'english', label: 'English', icon: '🇬🇧' },
-    { value: 'russian', label: 'Russian', icon: '🇷🇺' },
-    { value: 'both', label: 'English & Russian', icon: '🌍' },
-    { value: 'other', label: 'Other Languages', icon: '🗣️' },
-  ]
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -225,56 +209,13 @@ export default function PostJobPage() {
             </div>
 
             {/* Language Requirements */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Languages className="w-4 h-4 inline mr-1" />
-                Language Requirements *
-              </label>
-              <p className="text-sm text-gray-500 mb-3">
-                Select the language(s) required for this position. You can select multiple options.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {languageOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => handleLanguageToggle(option.value)}
-                    className={`px-4 py-3 rounded-lg border-2 transition-all text-sm font-medium flex items-center justify-center gap-2 ${
-                      formData.languages.includes(option.value)
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    <span className="text-lg">{option.icon}</span>
-                    <span>{option.label}</span>
-                  </button>
-                ))}
-              </div>
-              {formData.languages.length === 0 && (
-                <p className="text-sm text-red-600 mt-2">Please select at least one language requirement</p>
-              )}
-            </div>
-
-            {/* Other Languages */}
-            {formData.languages.includes('other') && (
-              <div>
-                <label htmlFor="otherLanguages" className="block text-sm font-medium text-gray-700 mb-2">
-                  Specify Other Languages (Optional)
-                </label>
-                <input
-                  type="text"
-                  id="otherLanguages"
-                  name="otherLanguages"
-                  value={formData.otherLanguages}
-                  onChange={handleChange}
-                  placeholder="e.g., French, German, Spanish (comma-separated)"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  List any other languages required, separated by commas
-                </p>
-              </div>
-            )}
+            <LanguageSelector
+              selectedLanguages={formData.languages}
+              onLanguagesChange={(languages) =>
+                setFormData({ ...formData, languages })
+              }
+              required
+            />
 
             {/* Contact Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-200">

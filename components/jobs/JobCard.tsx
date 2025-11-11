@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 
 export type JobType = 'full-time' | 'part-time' | 'temporary'
-export type LanguageRequirement = 'english' | 'russian' | 'both' | 'other'
+export type LanguageRequirement = 'english' | 'russian' | 'both' | 'other' // Legacy support
 
 export interface Job {
   id: string
@@ -19,8 +19,7 @@ export interface Job {
   source?: string
   sourceUrl?: string
   requirements?: string[]
-  languages: LanguageRequirement[]
-  otherLanguages?: string[]
+  languages: string[] // Language codes (e.g., 'en', 'ru', 'bn')
 }
 
 interface JobCardProps {
@@ -54,34 +53,19 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
-  const getLanguageLabel = (lang: LanguageRequirement) => {
-    switch (lang) {
-      case 'english':
-        return 'English'
-      case 'russian':
-        return 'Russian'
-      case 'both':
-        return 'English & Russian'
-      case 'other':
-        return 'Other'
-      default:
-        return lang
-    }
+  // Language mapping for display
+  const languageMap: Record<string, { name: string; flag: string; color: string }> = {
+    en: { name: 'English', flag: '🇬🇧', color: 'bg-blue-100 text-blue-800 border-blue-200' },
+    ru: { name: 'Russian', flag: '🇷🇺', color: 'bg-red-100 text-red-800 border-red-200' },
+    bn: { name: 'Bengali', flag: '🇧🇩', color: 'bg-green-100 text-green-800 border-green-200' },
+    es: { name: 'Spanish', flag: '🇪🇸', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
+    fr: { name: 'French', flag: '🇫🇷', color: 'bg-blue-100 text-blue-800 border-blue-200' },
+    de: { name: 'German', flag: '🇩🇪', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
+    // Add more as needed, or fetch from API
   }
 
-  const getLanguageColor = (lang: LanguageRequirement) => {
-    switch (lang) {
-      case 'english':
-        return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'russian':
-        return 'bg-red-100 text-red-800 border-red-200'
-      case 'both':
-        return 'bg-purple-100 text-purple-800 border-purple-200'
-      case 'other':
-        return 'bg-gray-100 text-gray-800 border-gray-200'
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
-    }
+  const getLanguageInfo = (code: string) => {
+    return languageMap[code] || { name: code.toUpperCase(), flag: '🌐', color: 'bg-gray-100 text-gray-800 border-gray-200' }
   }
 
   return (
@@ -144,26 +128,18 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
                 <span className="text-sm font-medium text-gray-900">Languages Required:</span>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                {job.languages.map((lang, idx) => (
-                  <span
-                    key={idx}
-                    className={`px-3 py-1 rounded-lg text-xs font-medium border ${getLanguageColor(lang)}`}
-                  >
-                    {getLanguageLabel(lang)}
-                  </span>
-                ))}
-                {job.otherLanguages && job.otherLanguages.length > 0 && (
-                  <>
-                    {job.otherLanguages.map((lang, idx) => (
-                      <span
-                        key={`other-${idx}`}
-                        className="px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200"
-                      >
-                        {lang}
-                      </span>
-                    ))}
-                  </>
-                )}
+                {job.languages.map((code, idx) => {
+                  const langInfo = getLanguageInfo(code)
+                  return (
+                    <span
+                      key={idx}
+                      className={`px-3 py-1 rounded-lg text-xs font-medium border flex items-center gap-1 ${langInfo.color}`}
+                    >
+                      <span>{langInfo.flag}</span>
+                      <span>{langInfo.name}</span>
+                    </span>
+                  )
+                })}
               </div>
             </div>
           )}

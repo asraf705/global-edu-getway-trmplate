@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Briefcase, Filter, Search, Plus, Languages } from 'lucide-react'
+import { Briefcase, Search, Plus } from 'lucide-react'
 import Link from 'next/link'
-import JobCard, { Job, JobType, LanguageRequirement } from '@/components/jobs/JobCard'
+import JobCard, { Job, JobType } from '@/components/jobs/JobCard'
+import LanguageFilter from '@/components/jobs/LanguageFilter'
 
 // Mock data - In production, this would come from an API or database
 // To integrate job scraping, use the API route: /api/jobs/scrape
@@ -23,7 +24,7 @@ const mockJobs: Job[] = [
     source: 'HeadHunter',
     sourceUrl: 'https://hh.ru',
     requirements: ['Teaching certification', '2+ years experience', 'Fluent English'],
-    languages: ['english'],
+    languages: ['en'],
   },
   {
     id: '2',
@@ -36,7 +37,7 @@ const mockJobs: Job[] = [
     postedDate: new Date(Date.now() - 86400000).toISOString(),
     source: 'Avito',
     sourceUrl: 'https://avito.ru',
-    languages: ['russian'],
+    languages: ['ru'],
   },
   {
     id: '3',
@@ -50,7 +51,7 @@ const mockJobs: Job[] = [
     source: 'SuperJob',
     sourceUrl: 'https://superjob.ru',
     requirements: ['IT degree or equivalent', '2+ years experience', 'Russian language'],
-    languages: ['russian'],
+    languages: ['ru'],
   },
   {
     id: '4',
@@ -61,7 +62,7 @@ const mockJobs: Job[] = [
     salary: '1,500 RUB/day',
     description: 'Temporary event staff needed for upcoming festivals and conferences. Multiple dates available.',
     postedDate: new Date(Date.now() - 259200000).toISOString(),
-    languages: ['both'],
+    languages: ['en', 'ru'],
   },
   {
     id: '5',
@@ -74,7 +75,7 @@ const mockJobs: Job[] = [
     postedDate: new Date(Date.now() - 345600000).toISOString(),
     source: 'Rabota.ru',
     sourceUrl: 'https://rabota.ru',
-    languages: ['both'],
+    languages: ['en', 'ru'],
   },
   {
     id: '6',
@@ -86,7 +87,7 @@ const mockJobs: Job[] = [
     description: 'Sales manager position for international trading company. Experience in B2B sales required.',
     postedDate: new Date(Date.now() - 432000000).toISOString(),
     requirements: ['Sales experience', 'B2B background', 'English proficiency'],
-    languages: ['english'],
+    languages: ['en'],
   },
   {
     id: '7',
@@ -97,8 +98,7 @@ const mockJobs: Job[] = [
     salary: '800 RUB/hour',
     description: 'Looking for a native French speaker to teach French language classes. Flexible schedule.',
     postedDate: new Date(Date.now() - 518400000).toISOString(),
-    languages: ['other'],
-    otherLanguages: ['French'],
+    languages: ['fr'],
   },
   {
     id: '8',
@@ -109,7 +109,7 @@ const mockJobs: Job[] = [
     salary: '50,000 - 70,000 RUB/month',
     description: 'Customer service position requiring both English and Russian language skills for international clients.',
     postedDate: new Date(Date.now() - 604800000).toISOString(),
-    languages: ['both'],
+    languages: ['en', 'ru'],
   },
 ]
 
@@ -117,7 +117,7 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>(mockJobs)
   const [filteredJobs, setFilteredJobs] = useState<Job[]>(mockJobs)
   const [selectedType, setSelectedType] = useState<JobType | 'all'>('all')
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageRequirement | 'all'>('all')
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
@@ -129,10 +129,10 @@ export default function JobsPage() {
       filtered = filtered.filter((job) => job.type === selectedType)
     }
 
-    // Filter by language
-    if (selectedLanguage !== 'all') {
+    // Filter by languages (show jobs that have at least one of the selected languages)
+    if (selectedLanguages.length > 0) {
       filtered = filtered.filter((job) => 
-        job.languages && job.languages.includes(selectedLanguage)
+        job.languages && job.languages.some((lang) => selectedLanguages.includes(lang))
       )
     }
 
@@ -149,7 +149,7 @@ export default function JobsPage() {
     }
 
     setFilteredJobs(filtered)
-  }, [selectedType, selectedLanguage, searchQuery, jobs])
+  }, [selectedType, selectedLanguages, searchQuery, jobs])
 
   const jobTypes: { value: JobType | 'all'; label: string }[] = [
     { value: 'all', label: 'All Jobs' },
@@ -158,13 +158,6 @@ export default function JobsPage() {
     { value: 'temporary', label: 'Temporary' },
   ]
 
-  const languageOptions: { value: LanguageRequirement | 'all'; label: string; icon: string }[] = [
-    { value: 'all', label: 'All Languages', icon: '🌐' },
-    { value: 'english', label: 'English Only', icon: '🇬🇧' },
-    { value: 'russian', label: 'Russian Only', icon: '🇷🇺' },
-    { value: 'both', label: 'English & Russian', icon: '🌍' },
-    { value: 'other', label: 'Other Languages', icon: '🗣️' },
-  ]
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -215,9 +208,9 @@ export default function JobsPage() {
             </div>
 
             {/* Filters Row */}
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
               {/* Job Type Filters */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm font-medium text-gray-700 flex items-center mr-2">
                   <Briefcase className="w-4 h-4 mr-1" />
                   Type:
@@ -237,26 +230,13 @@ export default function JobsPage() {
                 ))}
               </div>
 
-              {/* Language Filters */}
-              <div className="flex flex-wrap gap-2">
-                <span className="text-sm font-medium text-gray-700 flex items-center mr-2">
-                  <Languages className="w-4 h-4 mr-1" />
-                  Language:
-                </span>
-                {languageOptions.map((lang) => (
-                  <button
-                    key={lang.value}
-                    onClick={() => setSelectedLanguage(lang.value)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-1 ${
-                      selectedLanguage === lang.value
-                        ? 'bg-primary-500 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    <span>{lang.icon}</span>
-                    {lang.label}
-                  </button>
-                ))}
+              {/* Language Filter Dropdown */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-700">Language:</span>
+                <LanguageFilter
+                  selectedLanguages={selectedLanguages}
+                  onLanguagesChange={setSelectedLanguages}
+                />
               </div>
             </div>
           </div>
